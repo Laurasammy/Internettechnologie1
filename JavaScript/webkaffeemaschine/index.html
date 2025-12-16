@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Webkaffee-Maschine</title>
+</head>
+
+<body>
+	
+	<h1>Web-Kaffeemaschine</h1>
+	<p>Bitte bestellen Sie:</p>
+	
+	<select id="getraenk">
+		<option value="">Bitte wählen Sie...</option>
+		<option value="tee">Tee</option>
+		<option value="kaffee">Kaffee</option>
+	</select>
+	
+	<label for="milch" >Milch</label>
+		<input id ="milch" type="checkbox">
+	
+	<label for="zucker" >Zucker</label>
+		<input id ="zucker" type="checkbox">
+	
+	<button onClick="bestellungBerechnen()" id="order">Bestellung anzeigen</button>
+	
+	<p id="ergebnis"></p>
+	
+	<script>
+		function bestellungBerechnen(){
+			// alert("Bestellung wird berechnet")
+			
+			const elementGetraenk = document.getElementById("getraenk");
+			gewGetraenk=elementGetraenk.value;
+			console.log(gewGetraenk);
+			const optMilchfeld = document.getElementById("milch");
+			isMilch=optMilchfeld.checked;
+			console.log(isMilch);
+			const optZuckerfeld=document.getElementById("zucker");
+			isZucker=optZuckerfeld.checked;
+			console.log(isZucker);
+			if(gewGetraenk=="")
+			   {
+			   	document.getElementById("ergebnis").textContent="Sie haben nichts ausgewählt!";
+			   } else
+			   	{
+			   document.getElementById("ergebnis").textContent='Sie haben '+gewGetraenk+' gewählt.';
+			   }
+			//document.getElementById("ergebnis").textContent='Sie haben '+gewGetraenk+' gewählt.';
+		}
+	</script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Webkaffee-Maschine</title>
+</head>
+
+<body>
+  
+  <h1>Web-Kaffeemaschine</h1>
+  <p>Bitte bestellen Sie:</p>
+  
+  <!-- Getränkeauswahl -->
+  <select id="getraenk">
+    <option value="">Bitte wählen Sie...</option>
+    <option value="tee">Tee</option>
+    <option value="kaffee">Kaffee</option>
+  </select>
+  
+  <!-- Extras -->
+  <input id="milch" type="checkbox">
+  <label for="milch">Milch</label>
+
+  <input id="zucker" type="checkbox">
+  <label for="zucker">Zucker</label>
+  
+  <!-- Button löst die Berechnung aus -->
+  <button onclick="bestellungBerechnen()" id="order">Bestellung anzeigen</button>
+  
+  <!-- Ergebnis-Ausgabe -->
+  <p id="ergebnis"></p>
+
+  <!--
+    Hinweis:
+    In JavaScript gibt es zwei häufig genutzte Vergleichsoperatoren:
+    ==   vergleicht die Werte und wandelt bei Bedarf die Typen um (z.B. "5" == 5 ist true)
+    === vergleicht Werte UND Typ (z.B. "5" === 5 ist false, weil String vs. Zahl)
+    In DIESEM Beispiel sind die verglichenen Werte schon vom gleichen Typ
+    (Strings oder Booleans). Dadurch verhalten sich == und === hier gleich.
+    In größeren Projekten verwendet man oft ===, um Fehler durch automatische
+    Typumwandlung zu vermeiden.
+  -->
+  
+  <script>
+    function bestellungBerechnen() {
+      // 1. Elemente aus dem Dokument holen
+      const elementGetraenk = document.getElementById("getraenk");
+      const milchCheckbox   = document.getElementById("milch");
+      const zuckerCheckbox  = document.getElementById("zucker");
+      const ergebnisElement = document.getElementById("ergebnis");
+
+      // 2. Werte auslesen
+      const gewGetraenk = elementGetraenk.value;   // "tee", "kaffee" oder ""
+      const isMilch     = milchCheckbox.checked;   // true / false
+      const isZucker    = zuckerCheckbox.checked;  // true / false
+
+      // 3. Prüfen, ob ein Getränk gewählt wurde
+      // Hier: Vergleich mit == (funktioniert, weil gewGetraenk ein String ist)
+      if (gewGetraenk == "") {
+        ergebnisElement.textContent = "Bitte wählen Sie ein Getränk aus.";
+        return; // Funktion hier beenden
+      }
+
+      // 4. Grundpreis anhand des Getränks bestimmen
+      let preis = 0;
+      let getraenkName = "";
+
+      if (gewGetraenk == "kaffee") {
+        preis = 2.00;          // Grundpreis Kaffee
+        getraenkName = "Kaffee";
+      } else if (gewGetraenk == "tee") {
+        preis = 1.80;          // Grundpreis Tee
+        getraenkName = "Tee";
+      } else if (gewGetraenk != "") {
+        // Sicherheitsfall, falls ein unerwarteter Wert auftaucht
+        ergebnisElement.textContent = "Unbekanntes Getränk. Bitte neu wählen.";
+        return;
+      }
+
+      // 5. Aufpreise für Extras
+      // Auch hier: == ist möglich, weil isMilch / isZucker echte Booleans sind
+      if (isMilch == true) {
+        preis = preis + 0.20;
+      }
+
+      if (isZucker == true) {
+        preis = preis + 0.10;
+      }
+
+      // 6. Text für Extras
+      let extrasText = "";
+
+      if (isMilch == true && isZucker == true) {
+        extrasText = "mit Milch und Zucker";
+      } else if (isMilch == true && isZucker == false) {
+        extrasText = "mit Milch";
+      } else if (isMilch == false && isZucker == true) {
+        extrasText = "mit Zucker";
+      } else if (isMilch == false && isZucker == false) {
+        extrasText = "ohne Extras";
+      }
+
+      // 7. Preis formatieren (2 Nachkommastellen, Komma statt Punkt)
+      const preisText = preis.toFixed(2).replace(".", ",");
+
+      // 8. Gesamtausgabe formulieren und anzeigen
+      const ausgabeText =
+        "Sie haben " +
+        getraenkName +
+        " " +
+        extrasText +
+        " bestellt. Preis: " +
+        preisText +
+        " €.";
+
+      ergebnisElement.textContent = ausgabeText;
+    }
+  </script>
+</body>
+</html>
